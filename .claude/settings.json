@@ -1,0 +1,18 @@
+{
+  "permissions": {
+    "allow": [
+      "Read",
+      "Write",
+      "Edit",
+      "Glob",
+      "Grep",
+      "Bash(mkdir *)",
+      "Bash(cp *)",
+      "Bash(ln -s *)",
+      "Bash(rm -f state/current)",
+      "Bash(wc *)",
+      "Bash(cat *)",
+      "Bash(git *)"
+    ]
+  }
+}

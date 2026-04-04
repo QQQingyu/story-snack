@@ -1,0 +1,29 @@
+{
+  "name": "fanqie-mcp",
+  "version": "0.1.0",
+  "type": "module",
+  "main": "dist/index.js",
+  "scripts": {
+    "build": "tsc",
+    "dev": "tsc --watch",
+    "start": "node dist/index.js"
+  },
+  "keywords": [
+    "fanqie",
+    "novel",
+    "playwright",
+    "mcp"
+  ],
+  "author": "",
+  "license": "AGPL-3.0",
+  "description": "通过 Playwright 操控番茄小说作家后台进行章节发布与管理",
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.27.1",
+    "playwright": "^1.52.0",
+    "zod": "^3.24.4"
+  },
+  "devDependencies": {
+    "@types/node": "^22.15.3",
+    "typescript": "^5.8.3"
+  }
+}

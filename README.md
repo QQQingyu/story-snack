@@ -8,7 +8,7 @@
 
 ## 这是什么？
 
-Story Snack 是一套 Claude Code Skill，能够每天自动生成连载悬疑推理小说章节，并发布到[番茄小说](https://fanqienovel.com/main/writer)。每章天然三段式结构（上/中/下），同时适配三个 1 分钟短视频。
+Story Snack 是一套 Claude Code Skill，能够每天自动生成连载悬疑推理小说章节，并发布到[番茄小说](https://fanqienovel.com/main/writer)。每章天然三段式结构（上/中/下），天然适配三个 1 分钟视频，方便后续生成视频/短剧。
 
 **核心能力：**
 

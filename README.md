@@ -1,141 +1,155 @@
-# Story Snack 🍿
+# Story Snack
 
-**AI 连载小说写作 + 自动投稿系统** | AI Serialized Novel Writing & Auto-Publishing System
+**AI 连载小说写作 + 自动投稿系统**
 
 每天一个故事，每个故事三口吃完。
 
 ---
 
-## What is Story Snack?
+## 这是什么？
 
-Story Snack is a Claude Code skill that generates daily serialized mystery novel chapters and publishes them to [Fanqie Novel](https://writer.fanqienovel.com) (番茄小说). Each chapter is structured in three acts, designed to also work as three 1-minute short videos.
+Story Snack 是一套 Claude Code Skill，能够每天自动生成连载悬疑推理小说章节，并发布到番茄小说。每章天然三段式结构（上/中/下），同时适配三个 1 分钟短视频。
 
-**Key features:**
-- **6 specialized AI agents** working together: case design, writing, clue tracking, continuity checking, anti-AI rewriting, state management
-- **Anti-AI detection system** with Chinese forbidden word lists and 9 rewriting techniques
-- **Episodic mystery structure**: standalone cases per chapter with an overarching conspiracy arc
-- **Three-act chapters** (3000-4000 words): 上(hook) → 中(investigation) → 下(twist) — each maps to a 1-min video
-- **Semi-automatic workflow**: AI writes → quality gates → you review → auto-publish
-- **Per-chapter state snapshots**: character knowledge, timeline, clue tracking, arc progress
+**核心能力：**
+- **6 个专业 AI 代理协作**：案件设计、章节写作、线索追踪、连续性审计、反 AI 改写、状态管理
+- **反 AI 检测系统**：80+ 中文禁用词 + 9 种改写技巧，降低 AI 痕迹
+- **单元剧结构**：每章一个独立案件，暗线贯穿全局
+- **三幕章节**（3000-4000 字）：上（悬念）→ 中（调查）→ 下（反转），每段对应 1 分钟视频
+- **半自动工作流**：AI 写作 → 质量门 → 你审校 → 自动发布
+- **逐章状态快照**：角色知识、时间线、线索追踪、暗线进度
 
-## Architecture
+## 架构
 
 ```
-┌─────────────────────────────────────────────────────┐
-│                   Story Snack                        │
-├──────────┬──────────┬──────────┬─────────────────────┤
-│  Bible   │ Writing  │ Quality  │    Publishing       │
-│  System  │ Pipeline │ Gate     │    Pipeline          │
-├──────────┼──────────┼──────────┼─────────────────────┤
-│ 世界观   │ 案件设计  │ 反AI检测  │  番茄小说 MCP       │
-│ 角色档案  │ 章节写作  │ 风格检查  │  (Playwright)       │
-│ 暗线大纲  │ 连续性审计│ 角色一致性│                     │
-│ 线索管理  │ 状态更新  │ 线索校验  │                     │
-└──────────┴──────────┴──────────┴─────────────────────┘
+┌─────────────────────────────────────────────────┐
+│                 Story Snack                      │
+├──────────┬──────────┬──────────┬─────────────────┤
+│ 世界观系统 │ 写作管道  │  质量门   │   发布管道      │
+├──────────┼──────────┼──────────┼─────────────────┤
+│ 世界观    │ 案件设计  │ 反AI检测  │ 番茄小说 MCP    │
+│ 角色档案  │ 章节写作  │ 风格检查  │ (Playwright)   │
+│ 暗线大纲  │ 连续性审计│ 角色一致性│                │
+│ 线索管理  │ 状态更新  │ 线索校验  │                │
+└──────────┴──────────┴──────────┴─────────────────┘
 ```
 
-### Agents
+### 代理
 
-| Agent | Role | Model |
-|-------|------|-------|
-| `case-architect` | Designs daily case + 3-act outline | sonnet |
-| `chapter-writer` | Writes full 3000-4000 word chapter | opus |
-| `clue-manager` | Tracks clues, red herrings, arc foreshadowing | sonnet |
-| `continuity-editor` | Audits timeline, character knowledge, world rules | sonnet |
-| `perplexity-improver` | Rewrites AI-detectable patterns | sonnet |
-| `state-updater` | Creates per-chapter state snapshots | sonnet |
+| 代理 | 职责 | 模型 |
+|------|------|------|
+| `case-architect` | 设计当日案件 + 三幕大纲 | sonnet |
+| `chapter-writer` | 写作完整章节（3000-4000 字） | opus |
+| `clue-manager` | 追踪真线索、红鲱鱼、暗线伏笔 | sonnet |
+| `continuity-editor` | 审计时间线、角色知识、世界观一致性 | sonnet |
+| `perplexity-improver` | 改写 AI 痕迹明显的句子 | sonnet |
+| `state-updater` | 创建逐章状态快照 | sonnet |
 
-### Daily Workflow
+### Skill 指令
+
+| 指令 | 功能 |
+|------|------|
+| `/fill-bible` | 引导填充世界观设定（首次使用前必须运行） |
+| `/write-chapter` | 执行每日写作管道 |
+| `/check-status` | 查看当前章节号、暗线阶段、近 3 章摘要 |
+| `/check-clues` | 查看所有线索详情 |
+| `/publish` | 发布最新章节到番茄小说 |
+
+### 每日工作流
 
 ```
 case-architect → chapter-writer → clue-manager + continuity-editor
-       → perplexity-improver → YOU REVIEW → state-updater → publish
+       → perplexity-improver → 你审校 → state-updater → 发布
 ```
 
-## Quick Start
+## 快速开始
 
-### 1. Clone & Setup
+### 1. 克隆项目
 
 ```bash
-git clone https://github.com/YOUR_USERNAME/story-snack.git
+git clone https://github.com/QQQingyu/story-snack.git
 cd story-snack
 ```
 
-### 2. Fill Your Bible
+### 2. 填充世界观设定
 
-Edit the template files in `bible/` with your story settings:
+在项目目录下启动 Claude Code，使用 `/fill-bible` 指令，系统会引导你逐步完成：
 
 ```bash
-# Required - edit these before first run:
-bible/style.md              # Writing style guide (pre-filled, customize if needed)
-bible/characters/protagonist.md   # Your detective character
-bible/characters/sidekick.md      # The sidekick
-bible/universe/setting.md         # City, era, atmosphere
-bible/universe/rules.md           # Mystery rules (pre-filled)
-bible/arc/master-arc.md           # The overarching conspiracy
-bible/arc/case-pool.md            # 10-15 case outlines
+claude
+# 进入后输入 /fill-bible
 ```
 
-Or just tell Claude: `填充设定` and it will guide you through each file interactively.
-
-### 3. Write Your First Chapter
-
-Open Claude Code in the project directory and say:
+你也可以直接编辑 `bible/` 下的模板文件：
 
 ```
-写今天的章节
+bible/style.md                  # 写作风格指南（已预填，可按需调整）
+bible/characters/protagonist.md # 主角设定
+bible/characters/sidekick.md    # 搭档设定
+bible/universe/setting.md       # 城市、时代、氛围
+bible/universe/rules.md         # 推理规则（已预填）
+bible/arc/master-arc.md         # 暗线大纲
+bible/arc/case-pool.md          # 案件池（10-15 个案件梗概）
 ```
 
-The orchestrator will walk you through the full pipeline.
+### 3. 写第一章
 
-### 4. (Optional) Setup Fanqie Publishing
+```bash
+# 在 Claude Code 中输入
+/write-chapter
+```
+
+编排器会引导你走完整套管道：案件设计 → 写作 → 质量门 → 反 AI 改写 → 审校 → 定稿。
+
+### 4.（可选）配置番茄小说发布
 
 ```bash
 cd mcp/fanqie && npm install && npm run build
 ```
 
-Add the MCP server to your Claude Code config, then log in to writer.fanqienovel.com in a Playwright-managed browser.
+然后在 Claude Code 中使用 `/publish` 发布。首次使用需要在浏览器中登录番茄小说作者后台。
 
-## Customizing for Other Genres
+> 注：番茄小说作者后台地址为 https://fanqie.today ，注册后进入创作中心即可使用。
 
-Story Snack defaults to mystery/detective fiction, but you can adapt it to any genre:
+## 适配其他题材
 
-1. **Replace `bible/`** — change characters, universe, style for your genre
-2. **Modify `case-architect`** — rename to `episode-architect`, change the outline structure
-3. **Adjust `clue-manager`** — for non-mystery genres, repurpose as a "plot thread tracker"
-4. **Keep everything else** — continuity-editor, perplexity-improver, and state-updater are genre-agnostic
+Story Snack 默认是悬疑推理，但可以适配任何小说题材：
 
-## Project Structure
+1. **替换 `bible/`** — 修改角色、世界观、风格指南
+2. **改造 `case-architect`** — 重命名为 `episode-architect`，调整大纲结构
+3. **调整 `clue-manager`** — 非推理题材可改为「剧情线追踪器」
+4. **其余代理不用动** — continuity-editor、perplexity-improver、state-updater 与题材无关
+
+## 项目结构
 
 ```
 story-snack/
-├── CLAUDE.md                 # Master orchestrator
-├── .claude/agents/           # 6 specialized agents
-├── .claude/skills/           # Anti-AI detection skill
-├── bible/                    # World, characters, style (read-only after setup)
-├── state/                    # Per-chapter state snapshots
-├── timeline/                 # Append-only global timeline
-├── clues/                    # Clue tracker + arc progress
-├── manuscript/               # Final chapters + summaries
-├── .work/                    # Temporary working files
-├── scripts/detection/        # Anti-AI detection resources
-└── mcp/fanqie/              # Fanqie Novel auto-publish MCP
+├── CLAUDE.md                 # 主编排器
+├── .claude/agents/           # 6 个专业代理
+├── .claude/skills/           # Skill 指令 + 反 AI 检测
+├── bible/                    # 世界观、角色、风格（设定后只读）
+├── state/                    # 逐章状态快照
+├── timeline/                 # 全局时间线（只追加）
+├── clues/                    # 线索追踪 + 暗线进度
+├── manuscript/               # 终稿 + 摘要
+├── .work/                    # 临时工作文件
+├── scripts/detection/        # 反 AI 检测资源
+└── mcp/fanqie/              # 番茄小说自动发布 MCP
 ```
 
-## Anti-AI Detection System
+## 反 AI 检测系统
 
-The `perplexity-improver` agent scans chapters for AI-detectable patterns:
+`perplexity-improver` 代理扫描章节中的 AI 痕迹并改写：
 
-- **80+ Chinese forbidden words/phrases** (AI high-frequency vocabulary)
-- **6 pattern detectors**: uniform sentence structure, balanced paragraphs, empty descriptions, summary endings, direct emotion, post-dialogue explanation
-- **9 rewriting techniques**: syntax inversion, fragmentation, colloquial injection, sensory substitution, rhythm breaking, narrative ellipsis, character voice bleeding, anti-cliche endings, silence/whitespace
+- **80+ 中文禁用词/短语**（AI 高频词汇表）
+- **6 种模式检测**：句式整齐、段落过于平衡、空洞描写、总结式收尾、情绪直述、对话后解释
+- **9 种改写技巧**：句法颠倒、碎片化、口语化注入、感官替换、节奏破坏、省略叙事、角色语气污染、反套路收尾、留白
 
-## Credits
+## 致谢
 
-Inspired by:
-- [Claude-Code-Novel-Writer](https://github.com/forsonny/Claude-Code-Novel-Writer) — multi-agent orchestrator pattern
-- [Claude-Book](https://github.com/ThomasHoussin/Claude-Book) — bible system, perplexity-improver, state versioning
+灵感来源：
+- [Claude-Code-Novel-Writer](https://github.com/forsonny/Claude-Code-Novel-Writer) — 多代理编排模式
+- [Claude-Book](https://github.com/ThomasHoussin/Claude-Book) — 世界观系统、反 AI 检测、状态版本化
 
-## License
+## 许可证
 
 MIT

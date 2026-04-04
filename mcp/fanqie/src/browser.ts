@@ -12,7 +12,7 @@ import { chromium, type Browser, type BrowserContext, type Page } from 'playwrig
 // ── 配置 ──
 
 const CDP_PORT = parseInt(process.env.FANQIE_CDP_PORT || process.env.BROWSER_DEBUG_PORT || '40821', 10);
-const FANQIE_URL = process.env.FANQIE_URL || 'https://writer.fanqienovel.com/';
+const FANQIE_URL = process.env.FANQIE_URL || 'https://fanqienovel.com/main/writer/';
 const OUTPUT_DIR = process.env.FANQIE_OUTPUT_DIR || '/tmp/fanqie-output';
 const PROTOCOL_TIMEOUT = parseInt(process.env.FANQIE_PROTOCOL_TIMEOUT || '60000', 10);
 
@@ -43,7 +43,7 @@ async function findOrCreateFanqiePage(context: BrowserContext): Promise<Page> {
   // 优先复用已有的番茄小说作家后台页面
   for (const page of pages) {
     const url = page.url();
-    if (url.includes('writer.fanqienovel.com')) {
+    if (url.includes('fanqienovel.com/main/writer')) {
       console.error('[fanqie-browser] 命中已有番茄小说作家后台页面');
       await page.bringToFront();
       return page;

@@ -19,7 +19,7 @@ export interface CheckLoginResult {
 export async function checkLogin(page: Page): Promise<CheckLoginResult> {
   // 先导航到首页
   const currentUrl = page.url();
-  if (!currentUrl.includes('writer.fanqienovel.com')) {
+  if (!currentUrl.includes('fanqienovel.com')) {
     await page.goto(FANQIE_URL, {
       waitUntil: 'domcontentloaded',
       timeout: 30_000,
@@ -68,7 +68,7 @@ export async function checkLogin(page: Page): Promise<CheckLoginResult> {
   }
 
   // 兜底判断：如果没被重定向到登录页，且URL中有 writer.fanqienovel.com，大概率已登录
-  if (!foundDashboard && url.includes('writer.fanqienovel.com') && !isLoginPage) {
+  if (!foundDashboard && url.includes('fanqienovel.com') && !isLoginPage) {
     foundDashboard = true;
   }
 

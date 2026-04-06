@@ -1,13 +1,7 @@
 node_modules/
 dist/
 *.tgz
-.work/
 *.log
 .DS_Store
 .env
 .env.*
-.mcp.json
-manuscript/
-state/chapter-*/
-state/current
-outputs/

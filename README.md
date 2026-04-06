@@ -86,6 +86,7 @@ my-novel/
   RULES.md               ← orchestrator brain (also copied to agent-specific config)
   agents/                ← 6 agent role definitions
   skills/                ← 6 skill definitions
+  mcp/fanqie/            ← Fanqie Novel publish MCP (auto-configured)
   bible/                 ← world & characters (read-only after setup)
     style.md             ← writing style guide (genre-specific rules generated during setup)
     characters/          ← protagonist, sidekick, recurring cast

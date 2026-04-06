@@ -1,6 +1,6 @@
 # Story Snack
 
-Multi-agent serialized novel writing. One command per chapter, zero copy-paste.
+Multi-agent serialized novel writing. One command per chapter, zero copy-paste. 🍿
 
 ## What is this?
 

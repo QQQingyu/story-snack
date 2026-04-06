@@ -45,7 +45,9 @@ export async function publishChapter(
   params: PublishChapterParams,
 ): Promise<PublishChapterResult> {
   let page = initialPage;
-  const { bookId, chapterTitle, chapterContent } = params;
+  const { bookId, chapterContent } = params;
+  // 番茄平台会自动加"第N章"前缀，标题里不能重复带
+  const chapterTitle = params.chapterTitle.replace(/^第\s*\d+\s*章[：:\s]*/u, '');
 
   try {
     // ─── Step 1: 导航到作品管理页 ───

@@ -45,9 +45,11 @@ export async function publishChapter(
   params: PublishChapterParams,
 ): Promise<PublishChapterResult> {
   let page = initialPage;
-  const { bookId, chapterContent } = params;
+  const { bookId } = params;
   // 番茄平台会自动加"第N章"前缀，标题里不能重复带
   const chapterTitle = params.chapterTitle.replace(/^第\s*\d+\s*章[：:\s]*/u, '');
+  // 去掉正文中的 markdown 分节标题（## 上 · xxx、## 中 · xxx、## 下 · xxx）
+  const chapterContent = params.chapterContent.replace(/^#{1,3}\s+.+$/gm, '').replace(/\n{3,}/g, '\n\n');
 
   try {
     // ─── Step 1: 导航到作品管理页 ───

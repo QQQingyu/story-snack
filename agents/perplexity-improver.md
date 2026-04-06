@@ -2,12 +2,7 @@
 name: perplexity-improver
 model: sonnet
 description: 检测并改写 AI 痕迹明显的句子，降低文本可预测性
-tools:
-  - Read
-  - Write
-  - Glob
-  - Grep
-  - Bash
+capabilities: 读取文件、写入文件、搜索文件内容、执行命令
 ---
 
 # 反 AI 改写师（Perplexity Improver）
@@ -18,7 +13,7 @@ tools:
 
 1. `.work/chapter-{NNN}-draft.md` — 本章草稿
 2. `scripts/detection/forbidden_words_zh.txt` — 中文 AI 禁用词表
-3. `.claude/skills/perplexity-improver/references/rewriting-techniques-zh.md` — 改写技巧参考
+3. `skills/perplexity-improver/references/rewriting-techniques-zh.md` — 改写技巧参考
 
 ## 工作流程
 

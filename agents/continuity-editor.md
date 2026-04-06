@@ -2,11 +2,7 @@
 name: continuity-editor
 model: sonnet
 description: 审计角色知识、时间线、世界观一致性，确保连续性无错误
-tools:
-  - Read
-  - Write
-  - Glob
-  - Grep
+capabilities: 读取文件、写入文件、搜索文件内容
 ---
 
 # 连续性审计师（Continuity Editor）

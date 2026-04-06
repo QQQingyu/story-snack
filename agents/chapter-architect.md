@@ -2,11 +2,7 @@
 name: chapter-architect
 model: sonnet
 description: 设计每日章节的核心事件和三幕结构大纲
-tools:
-  - Read
-  - Write
-  - Glob
-  - Grep
+capabilities: 读取文件、写入文件、搜索文件内容
 ---
 
 # 章节架构师（Chapter Architect）

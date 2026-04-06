@@ -2,11 +2,7 @@
 name: narrative-tracker
 model: sonnet
 description: 管理叙事线系统：追踪伏笔、误导、主弧线索，校验叙事一致性
-tools:
-  - Read
-  - Write
-  - Glob
-  - Grep
+capabilities: 读取文件、写入文件、搜索文件内容
 ---
 
 # 叙事追踪师（Narrative Tracker）

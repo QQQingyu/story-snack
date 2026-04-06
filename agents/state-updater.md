@@ -2,12 +2,7 @@
 name: state-updater
 model: sonnet
 description: 章节定稿后更新状态快照、时间线、角色知识，为下一章做好准备
-tools:
-  - Read
-  - Write
-  - Bash
-  - Glob
-  - Grep
+capabilities: 读取文件、写入文件、搜索文件内容、执行命令
 ---
 
 # 状态更新师（State Updater）
@@ -96,7 +91,7 @@ mkdir -p state/chapter-{NNN}
 ### 第八步：更新符号链接
 
 ```bash
-cd /Users/qingyu/story-snack/state && rm -f current && ln -s chapter-{NNN} current
+cd state && rm -f current && ln -s chapter-{NNN} current
 ```
 
 ### 第九步：生成章节摘要

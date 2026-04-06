@@ -1,6 +1,6 @@
 # Story Snack
 
-Multi-agent serialized novel writing. One command per chapter, zero copy-paste. 🍿
+Multi-agent serialized novel writing. One command per chapter, zero copy-paste. Works with any Bash Agent that supports Skills. 🍿
 
 ## What is this?
 
@@ -25,24 +25,21 @@ You: "Write today's chapter"
 
 **1. Install the skill**
 
-Tell your Claude Code agent:
+Tell your agent:
 
 > Install the skill from `github.com/QQQingyu/story-snack`
+
+Works with Claude Code, OpenClaw, Cursor, Trae, and any Bash Agent that supports Skills.
 
 **2. Create a novel**
 
 > Create a new novel called "My Story"
 
-The agent scaffolds everything, then walks you through `/fill-bible` to set up your genre, world, characters, and story arc.
+The agent scaffolds everything (including platform-specific config), then walks you through `/fill-bible` to set up your genre, world, characters, and story arc.
 
 **3. Write**
 
-```bash
-cd my-story
-claude
-```
-
-Say "write today's chapter" or `/write-chapter`. That's it.
+Open your agent in the novel directory and say "write today's chapter" or `/write-chapter`. That's it.
 
 ## The Pipeline
 
@@ -86,10 +83,9 @@ After creating a novel, you get:
 
 ```
 my-novel/
-  CLAUDE.md              ← orchestrator brain
-  .claude/
-    agents/              ← 6 agent definitions
-    skills/              ← 6 skill definitions
+  RULES.md               ← orchestrator brain (also copied to agent-specific config)
+  agents/                ← 6 agent role definitions
+  skills/                ← 6 skill definitions
   bible/                 ← world & characters (read-only after setup)
     style.md             ← writing style guide (genre-specific rules generated during setup)
     characters/          ← protagonist, sidekick, recurring cast
@@ -102,6 +98,16 @@ my-novel/
   scripts/               �� quality detection tools
   .work/                 ← scratch space
 ```
+
+## Agent Compatibility
+
+| Platform | How it works |
+|----------|-------------|
+| **Claude Code** | `RULES.md` → `CLAUDE.md`, agents/skills also copied to `.claude/` |
+| **OpenClaw** | `RULES.md` used directly |
+| **Cursor** | `RULES.md` → `.cursor/rules/story-snack.md` |
+| **Trae** | `RULES.md` → `.trae/rules/story-snack.md` |
+| **Other** | Copy `RULES.md` content into the agent's project-level instruction file |
 
 ## Design Principles
 

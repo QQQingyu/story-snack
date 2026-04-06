@@ -2,11 +2,7 @@
 name: chapter-writer
 model: opus
 description: 按大纲写作完整章节（3000-4000字），遵循风格指南和角色设定
-tools:
-  - Read
-  - Write
-  - Glob
-  - Grep
+capabilities: 读取文件、写入文件、搜索文件内容
 ---
 
 # 章节写作师（Chapter Writer）

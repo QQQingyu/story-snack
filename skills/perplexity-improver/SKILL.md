@@ -37,4 +37,4 @@ description: 检测 AI 痕迹并改写，降低文本可预测性
 
 ## 使用方式
 
-由主编排器（CLAUDE.md）在写作管道中自动调用 `perplexity-improver` 代理。代理会读取草稿、执行检测和改写、输出改善后的章节和改写报告。
+由主编排器（RULES.md）在写作管道中自动调用 `perplexity-improver` 代理。代理会读取草稿、执行检测和改写、输出改善后的章节和改写报告。

@@ -52,28 +52,60 @@ export async function publishChapter(
   const chapterContent = params.chapterContent.replace(/^#{1,3}\s+.+$/gm, '').replace(/\n{3,}/g, '\n\n');
 
   try {
-    // ─── Step 1: 导航到作品管理页 ───
-    const bookManageUrl = `https://fanqienovel.com/main/writer/book-manage?enter_from=book_detail`;
-    await page.goto(bookManageUrl, { waitUntil: 'domcontentloaded', timeout: 30_000 });
+    // ─── Step 1: 导航到指定作品的章节管理页 ───
+    // 必须用 bookId 定位到具体作品，避免误读其他作品的章节数
+    const chapterManageUrl = `https://fanqienovel.com/main/writer/chapter-manage/${bookId}`;
+    await page.goto(chapterManageUrl, { waitUntil: 'domcontentloaded', timeout: 30_000 });
     await sleep(3000);
-    console.error(`[publish] 作品管理页: ${page.url()}`);
+    console.error(`[publish] 章节管理页: ${page.url()}`);
 
-    // ─── Step 1.5: 读取已有章节数 ───
+    // ─── Step 1.5: 读取当前作品的已有章节数 ───
     let nextChapterNum = 1;
     try {
-      const bodyText = await page.textContent('body');
-      const match = bodyText?.match(/最近更新[：:]\s*第(\d+)章/);
-      if (match) {
-        nextChapterNum = parseInt(match[1], 10) + 1;
-        console.error(`[publish] 最近更新第${match[1]}章 → 新章节编号: ${nextChapterNum}`);
+      // 在章节管理页中，统计已有章节行数
+      // 番茄的章节管理页每章一行，包含"第N章"文字
+      const chapterRows = await page.$$eval(
+        '[class*="chapter"], tr, [class*="item"]',
+        (rows) => {
+          let maxNum = 0;
+          for (const row of rows) {
+            const text = row.textContent || '';
+            const match = text.match(/第\s*(\d+)\s*章/);
+            if (match) {
+              const num = parseInt(match[1], 10);
+              if (num > maxNum) maxNum = num;
+            }
+          }
+          return maxNum;
+        }
+      );
+      if (chapterRows > 0) {
+        nextChapterNum = chapterRows + 1;
+        console.error(`[publish] 已有 ${chapterRows} 章 → 新章节编号: ${nextChapterNum}`);
+      } else {
+        // 回退：从页面全文匹配
+        const bodyText = await page.textContent('body');
+        const allMatches = bodyText?.matchAll(/第\s*(\d+)\s*章/g);
+        if (allMatches) {
+          for (const m of allMatches) {
+            const num = parseInt(m[1], 10);
+            if (num >= nextChapterNum) nextChapterNum = num + 1;
+          }
+        }
+        if (nextChapterNum > 1) {
+          console.error(`[publish] 页面文本匹配 → 新章节编号: ${nextChapterNum}`);
+        } else {
+          console.error(`[publish] 未发现已有章节 → 新章节编号: 1`);
+        }
       }
-    } catch { /* use default */ }
+    } catch (e) {
+      console.error(`[publish] 章节数检测失败，使用默认值 1: ${e}`);
+    }
 
     // ─── Step 2: 点击"创建章节" ───
     const context = page.context();
     const pagePromise = context.waitForEvent('page', { timeout: 8000 }).catch(() => null);
 
-    // 用 Playwright 点击（作品管理页不是 Arco Modal，不需要坐标）
     let clicked = false;
     for (const sel of SEL.createChapterBtn) {
       const btn = await page.$(sel);

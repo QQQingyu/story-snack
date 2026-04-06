@@ -17,12 +17,12 @@ tools:
 ## 输入
 
 1. `.work/chapter-{NNN}-improved.md` — 定稿章节（经过反 AI 改写）
-2. `.work/chapter-{NNN}-clue-report.md` — 线索报告
+2. `.work/chapter-{NNN}-thread-report.md` — 叙事线报告
 3. `state/current/` — 当前状态快照
 4. `state/template/` — 状态模板
 5. `timeline/history.md` — 全局时间线
-6. `clues/tracker.json` — 线索追踪总表
-7. `clues/arc-progress.json` — 暗线进度
+6. `clues/tracker.json` — 叙事线追踪总表
+7. `clues/arc-progress.json` — 主弧进度
 
 ## 工作流程
 
@@ -38,34 +38,34 @@ mkdir -p state/chapter-{NNN}
 
 - **时间**：本章发生的时间（从叙事中提取，或根据上一章推算）
 - **地点**：章节结束时主角所在位置
-- **正在发生的事**：当前案件状态（已结案 / 新案件开启 / 进行中）
-- **主角状态**：身体状况、情绪、下一步目标
+- **正在发生的事**：当前核心事件状态（已完结 / 新事件开启 / 进行中）
+- **视角人物状态**：身体状况、情绪、下一步目标
 
 ### 第三步：更新 characters.md
 
 在 `state/chapter-{NNN}/characters.md` 中记录：
 
-- 主角/搭档的身体和情绪状态变化
-- 本章新出场角色（姓名、身份、与主角关系）
+- 视角人物及核心角色的身体和情绪状态变化
+- 本章新出场角色（姓名、身份、与视角人物关系）
 - 已有角色的关系变化（信任度、冲突、新发现）
 
 ### 第四步：更新 knowledge.md
 
 在 `state/chapter-{NNN}/knowledge.md` 中记录：
 
-- **主角已知信息**：在上一章基础上累加本章新获知的信息
-- **主角未知信息**：读者知道但主角还不知道的（来自叙事视角差异）
-- **搭档已知信息**：如果搭档独立获得了某些信息
+- **视角人物已知信息**：在上一章基础上累加本章新获知的信息
+- **视角人物未知信息**：读者知道但角色还不知道的（来自叙事视角差异）
+- **其他角色已知信息**：如果其他重要角色独立获得了某些信息
 
-> 重点：信息只能通过合理渠道获取。如果主角没有亲眼看到或被告知，就不能列入已知。
+> 重点：信息只能通过合理渠道获取。如果角色没有亲眼看到或被告知，就不能列入已知。
 
 ### 第五步：更新 clues.md
 
-从 `.work/chapter-{NNN}-clue-report.md` 中提取本章线索，写入 `state/chapter-{NNN}/clues.md`：
+从 `.work/chapter-{NNN}-thread-report.md` 中提取本章叙事线，写入 `state/chapter-{NNN}/clues.md`：
 
-- 真线索（描述 + 出处）
-- 红鲱鱼（描述 + 误导方向）
-- 暗线伏笔（描述 + 关联的主线阶段）
+- 伏笔（描述 + 出处）
+- 误导（描述 + 误导方向）
+- 主弧线索（描述 + 关联的主弧阶段）
 
 ### 第六步：追加全局时间线
 
@@ -79,8 +79,8 @@ mkdir -p state/chapter-{NNN}
   - {事件1}
   - {事件2}
   - {事件3}
-- **案件状态**：{新开启 / 进行中 / 已结案}
-- **暗线**：{无推进 / 埋下伏笔 / 有重要发现}
+- **核心事件状态**：{新开启 / 进行中 / 已完结}
+- **主弧**：{无推进 / 埋下伏笔 / 有重要进展}
 ```
 
 ### 第七步：清空当前章节事件
@@ -106,19 +106,19 @@ cd /Users/qingyu/story-snack/state && rm -f current && ln -s chapter-{NNN} curre
 ```markdown
 # 第 N 章摘要
 
-## 案件
-（一句话概括本章案件和结果）
+## 核心事件
+（一句话概括本章核心事件和结果）
 
-## 关键线索
-- {线索1}
-- {线索2}
+## 关键伏笔
+- {伏笔1}
+- {伏笔2}
 
-## 暗线进展
-（暗线相关的变化，如无则写「无」）
+## 主弧进展
+（主弧相关的变化，如无则写「无」）
 
 ## 角色状态
-- 主角：{简述状态变化}
-- 搭档：{简述状态变化}
+- 视角人物：{简述状态变化}
+- 核心配角：{简述状态变化}
 
 ## 下章衔接
 （本章结尾留下的悬念或过渡点）
@@ -130,12 +130,12 @@ cd /Users/qingyu/story-snack/state && rm -f current && ln -s chapter-{NNN} curre
 cp .work/chapter-{NNN}-improved.md manuscript/chapters/chapter-{NNN}.md
 ```
 
-### 第十一步：更新暗线进度
+### 第十一步：更新主弧进度
 
 读取 `clues/arc-progress.json`，更新以下字段：
 - `current_chapter`：设为当前章节号
-- `arc_clues_planted`：如果本章有新的暗线伏笔，追加
-- `tension_level`：根据暗线阶段适当调整（setup: 0-3, rising: 4-6, climax: 7-10）
+- `arc_foreshadowing_planted`：如果本章有新的主弧伏笔，追加
+- `tension_level`：根据主弧阶段适当调整（铺垫: 0-3, 升级: 4-6, 高潮: 7-10）
 
 ## 输出
 

@@ -1,6 +1,6 @@
 ---
 name: write-chapter
-description: 执行每日写作管道：案件设计→写作→质量门→反AI改写→人工审校→定稿。生成一个完整章节。
+description: 执行每日写作管道：章节设计→写作→质量门→反AI改写→人工审校→定稿。生成一个完整章节。
 ---
 
 # 写今天的章节
@@ -13,12 +13,12 @@ description: 执行每日写作管道：案件设计→写作→质量门→反A
 2. 如果 N = 1，检查 `bible/` 是否已填充（不是模板状态）
    - 未填充 → 提示用户先运行 `/fill-bible`
 3. 读取 `state/current/situation.md` 了解上一章状态
-4. 向用户简报：即将写第 N 章、当前暗线阶段
+4. 向用户简报：即将写第 N 章、当前主弧阶段
 
 ## 写作管道
 
-### Phase 1: 案件设计
-- 调用 `case-architect` 代理
+### Phase 1: 章节设计
+- 调用 `chapter-architect` 代理
 - 展示大纲摘要给用户
 - 询问是否需要调整
 
@@ -26,7 +26,7 @@ description: 执行每日写作管道：案件设计→写作→质量门→反A
 - 用户确认大纲后，调用 `chapter-writer` 代理
 
 ### Phase 3: 质量门
-- 并行调用 `clue-manager` 和 `continuity-editor`
+- 并行调用 `narrative-tracker` 和 `continuity-editor`
 - PASS → 继续
 - WARN → 告知用户，询问是否修改
 - FAIL → 传给 chapter-writer 修改，最多重试 2 次
